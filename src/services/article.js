@@ -20,7 +20,7 @@ export const articleApi = createApi({
   }),
   endpoints: (builder) => ({
     getSummary: builder.query({
-      query: (params) => `?url=${params.articleUrl}&length=3`
+      query: (params) => `?url=${encodeURIComponent(params.articleUrl)}&length=3`
     }),
   }),
 });
