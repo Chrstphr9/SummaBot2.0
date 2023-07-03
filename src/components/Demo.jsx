@@ -13,6 +13,16 @@ const Demo = () => {
 
   const [getSummary, { error, isFetching }] = useLazyGetSummaryQuery();
 
+  useEffect (() =>{
+    const articlesFromLocalStorage = JSON.parse(
+      localStorage.getItem('articles')
+    )
+
+    if (articlesFromLocalStorage) {
+      setAllArticles(articlesFromLocalStorage)
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { data } = await getSummary({ articleUrl: article.url });
@@ -27,7 +37,8 @@ const Demo = () => {
         updatedAllArticles
       );
 
-      console.log(newArticle);
+      localStorage.setItem('articles', JSON.stringify
+      (updatedAllArticles));
     }
   };
 
@@ -66,6 +77,29 @@ const Demo = () => {
             <MdSend size="2rem" />
           </button>
         </form>
+
+            <div className="flex flex-col gap-1 max-h-60
+            overflow-y-auto">
+              {allArticles.map ((item, index) => (
+                <div
+                  key={`link-${index}`}
+                  onClick={() => setArticle(item)}
+                  className="link_card"
+                >
+                  <div className="copy_btn">
+                    <img 
+                      src={copy}
+                      alt='copy_icon'
+                      className="w-[40%] h-[40%] object-contained"
+                    />
+                  </div>
+                  <p>
+                    {item.url}
+                  </p>
+                </div>
+              ))}
+            </div>
+
       </div>
     </section>
   );
